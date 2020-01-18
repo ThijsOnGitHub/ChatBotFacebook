@@ -19,6 +19,7 @@ const request = require("request"),
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log("webhook is listening"));
 
+
 // Accepts GET requests at the /webhook endpoint
 app.get("/webhook", (req, res) => {
   /** UPDATE YOUR VERIFY TOKEN **/
@@ -99,36 +100,35 @@ function handleMessage(sender_psid, received_message) {
             text: "What do you want to do next?",
             buttons: [
               {
-                "type": "postback",
-                "title": "Klik niet hier",
-                "payload": "KLIKNIETHIER"
+                type: "postback",
+                title: "Klik niet hier",
+                payload: "KLIKNIETHIER"
               }
             ]
           }
         }
       };
     }
-  
-  // Sends the response message
-   if (received_message.text.includes("Repeat")) {
-     for(let i=0;i<20;i++){
-       setTimeout(()=>{
-         callSendAPI(sender_psid, {text:"Nummer "+i});
-       },500*i)
-     }
-    }else if(received_message.text.includes("start typen")){
-      callSenderActionApi(sender_psid,"typing_on")
-    }else{
+
+    // Sends the response message
+    if (received_message.text.includes("Repeat")) {
+      for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+          callSendAPI(sender_psid, { text: "Nummer " + i });
+        }, 500 * i);
+      }
+    } else if (received_message.text.includes("start typen")) {
+      callSenderActionApi(sender_psid, "typing_on");
+    } else {
       callSendAPI(sender_psid, response);
     }
   }
-  
 }
 
 // Handles messaging_postbacks events
 function handlePostback(sender_psid, received_postback) {
-  if(received_postback.payload=="KLIKNIETHIER"){
-    callSendAPI(sender_psid,{text:"Ik zei niet doen!"})
+  if (received_postback.payload == "KLIKNIETHIER") {
+    callSendAPI(sender_psid, { text: "Ik zei niet doen!" });
   }
 }
 
@@ -159,20 +159,21 @@ function callSendAPI(sender_psid, response) {
   );
 }
 
-function callSenderActionApi(sender_psid, action){
-   var request_body={"recipient":{
-    "id":sender_psid
-  },
-  "sender_action":action
-}
-   /*
+function callSenderActionApi(sender_psid, action) {
+  var request_body = {
+    recipient: {
+      id: sender_psid
+    },
+    sender_action: action
+  };
+  /*
    mark_seen = Mark last message as read
 
 typing_on = Turn typing indicators on
 
 typing_off = Turn typing indicators off
 */
-    request(
+  request(
     {
       uri: "https://graph.facebook.com/v2.6/me/messages",
       qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
