@@ -19,13 +19,10 @@ const request = require("request"),
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log("webhook is listening"));
 
-app.get("/",(req,res)=>{
-  res.send("hoi")
-})
-/*
 
 // Accepts GET requests at the /webhook endpoint
 app.get("/webhook", (req, res) => {
+  /** UPDATE YOUR VERIFY TOKEN **/
   const VERIFY_TOKEN = "bert";
 
   // Parse params from the webhook verification request
@@ -175,7 +172,7 @@ function callSenderActionApi(sender_psid, action) {
 typing_on = Turn typing indicators on
 
 typing_off = Turn typing indicators off
-
+*/
   request(
     {
       uri: "https://graph.facebook.com/v2.6/me/messages",
@@ -192,4 +189,3 @@ typing_off = Turn typing indicators off
     }
   );
 }
-*/
