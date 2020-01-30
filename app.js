@@ -10,7 +10,7 @@
 
 // Imports dependencies and set up http server
 //const request = require("request"),
- const express = require("express"),
+ const express = require("express")
   //body_parser = require("body-parser"),
  const app = express().use(body_parser.json()); // creates express http server
 
